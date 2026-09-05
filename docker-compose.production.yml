@@ -1,0 +1,39 @@
+volumes:
+  pg_data:
+  static:
+  media:
+
+services:
+  db:
+    image: postgres:13.10
+    env_file: .env.example
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+
+  backend:
+    image: nastt/kittygram_backend:latest
+    env_file: .env.example
+    volumes:
+      - static:/backend_static
+      - media:/media
+    depends_on:
+      db:
+        condition: service_healthy
+
+  frontend:
+    image: nastt/kittygram_frontend:latest
+    command: cp -r /app/build/. /frontend_static/
+    volumes:
+      - static:/frontend_static
+
+  gateway:
+    image: nastt/kittygram_gateway:latest
+    volumes:
+      - static:/staticfiles
+      - media:/media
+    ports:
+      - "9000:80"
+    depends_on:
+      - backend
+      - frontend
