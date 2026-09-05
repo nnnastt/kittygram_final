@@ -150,7 +150,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "docker-compose.production.yml"
+          source: "./docker-compose.production.yml"
           target: "kittygram"
 
       - name: Copy .env to server
@@ -159,7 +159,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: ".env"
+          source: "./.env"
           target: "kittygram"
 
       - name: Deploy on server
