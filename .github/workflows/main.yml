@@ -139,12 +139,12 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [ build_backend, build_frontend, build_gateway ]
+    needs: [build_backend, build_frontend, build_gateway]
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Copy docker-compose.production.yml via ssh
+      - name: Copy docker-compose.production.yml to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -153,7 +153,16 @@ jobs:
           source: "docker-compose.production.yml"
           target: "kittygram"
 
-      - name: Executing remote ssh commands to deploy
+      - name: Copy .env to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          key: ${{ secrets.SSH_KEY }}
+          source: ".env"
+          target: "kittygram"
+
+      - name: Deploy on server
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -161,23 +170,14 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd kittygram
-            POSTGRES_USER=kittygram_user
-            POSTGRES_PASSWORD=kittygram_password
-            POSTGRES_DB=kittygram
-            DB_HOST=db
-            DB_PORT=5432
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
             sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
-            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+            sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --noinput
             sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/
 
-  send_message:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-      - name: Send message
+      - name: Send Telegram notification
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
