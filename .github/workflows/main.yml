@@ -161,6 +161,13 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd kittygram
+            cat > .env << 'EOF'
+            POSTGRES_USER=kittygram_user
+            POSTGRES_PASSWORD=kittygram_password
+            POSTGRES_DB=kittygram
+            DB_HOST=db
+            DB_PORT=5432
+            EOF
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
