@@ -150,8 +150,8 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          source: "./docker-compose.production.yml"
-          target: "kittygram"
+          source: "docker-compose.production.yml"
+          target: "kittygram_final"
 
       - name: Copy .env to server
         uses: appleboy/scp-action@master
@@ -160,7 +160,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           source: "./.env"
-          target: "kittygram"
+          target: "kittygram_final"
 
       - name: Deploy on server
         uses: appleboy/ssh-action@master
@@ -169,7 +169,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd kittygram
+            cd kittygram_final
             sudo docker compose -f docker-compose.production.yml pull
             sudo docker compose -f docker-compose.production.yml down
             sudo docker compose -f docker-compose.production.yml up -d
