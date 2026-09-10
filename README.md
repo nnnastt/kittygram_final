@@ -1,26 +1,54 @@
-#  Как работать с репозиторием финального задания
+# Kittygram
 
-## Что нужно сделать
+[![Kittygram Workflow](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml)
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+## 📖 Описание проекта
 
-## Как проверить работу с помощью автотестов
+Kittygram - это социальная сеть для котиков. Пользователи могут:
+- Создавать профили своих питомцев
+- Делиться фотографиями
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
-```
+## 🛠 Технологии
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+- **Backend:** Django 5.1, Django REST Framework, PostgreSQL
+- **Frontend:** React, Node.js
+- **DevOps:** Docker, Docker Compose, Nginx, GitHub Actions
+- **CI/CD:** GitHub Actions, Docker Hub
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+## 🚀 Как развернуть проект
 
-## Чек-лист для проверки перед отправкой задания
+### Предварительные требования
+- Docker и Docker Compose
+- Сервер с Ubuntu
+- Домен (опционально)
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+### Локальный запуск
+
+```bash
+# Клонировать репозиторий
+git clone https://github.com/nnnastt/kittygram_final.git
+cd kittygram_final
+
+# Создать .env файл
+cat > .env << 'EOF'
+POSTGRES_USER=kittygram_user
+POSTGRES_PASSWORD=kittygram_password
+POSTGRES_DB=kittygram
+DB_HOST=db
+DB_PORT=5432
+DJANGO_SECRET_KEY=ваш-секретный-ключ
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+EOF
+
+# Запустить контейнеры
+docker compose up -d
+
+# Выполнить миграции
+docker compose exec backend python manage.py migrate
+
+# Собрать статику
+docker compose exec backend python manage.py collectstatic --noinput
+
+## Автор
+https://github.com/nnnastt
