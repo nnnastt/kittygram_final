@@ -36,7 +36,7 @@ POSTGRES_PASSWORD=kittygram_password
 POSTGRES_DB=kittygram
 DB_HOST=db
 DB_PORT=5432
-DJANGO_SECRET_KEY=ваш-секретный-ключ
+DJANGO_SECRET_KEY=а тут секретик
 DJANGO_DEBUG=True
 DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
 EOF
