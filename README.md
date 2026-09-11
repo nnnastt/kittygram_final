@@ -1,6 +1,3 @@
-## Автор
-https://github.com/nnnastt
-
 # Kittygram
 
 [![Kittygram Workflow](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml)
@@ -52,5 +49,6 @@ docker compose exec backend python manage.py migrate
 
 # Собрать статику
 docker compose exec backend python manage.py collectstatic --noinput
-
-
+```
+## Автор
+https://github.com/nnnastt
