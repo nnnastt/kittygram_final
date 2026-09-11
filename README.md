@@ -1,5 +1,4 @@
 # Kittygram
-
 [![Kittygram Workflow](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml/badge.svg)](https://github.com/nnnastt/kittygram_final/actions/workflows/main.yml)
 
 ## 📖 Описание проекта
